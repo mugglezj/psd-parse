@@ -1,0 +1,22 @@
+{
+  "name": "psd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc -w",
+    "example": "nodemon --inspect ./example/index.js"
+  },
+  "author": "zj",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^9.6.5"
+  },
+  "dependencies": {
+    "iconv": "^2.3.0",
+    "iconv-lite": "^0.4.21",
+    "jspack": "0.0.4",
+    "lodash": "^4.17.5"
+  }
+}
