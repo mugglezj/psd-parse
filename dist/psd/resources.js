@@ -13,6 +13,7 @@ class Resources {
         this.file.seek(this.length, true);
     }
     parse() {
+        this.startPos = this.file.tell();
         this.length = this.file.readInt();
         const finish = this.length + this.file.tell();
         let imageResources = {};
@@ -39,6 +40,7 @@ class Resources {
             // this.file.seek(resourceEnd)
         }
         this.file.seek(finish);
+        this.startPos = this.file.tell();
         return imageResources;
     }
     resource(search) {

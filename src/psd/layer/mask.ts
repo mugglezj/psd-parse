@@ -5,6 +5,7 @@ export default class Mask{
         this.file = file
     }
     parse() {
+        // todo laye mask/adjustment layer data
         let file = this.file
         const size = file.readInt()
         const endPos = file.tell()+size
@@ -14,9 +15,14 @@ export default class Mask{
         const bottom = file.readInt()
         const right = file.readInt()
         const defaultColor = file.readByte()
-        console.log(defaultColor)
         const flag = file.readByte()
-        console.log(flag)
+        // Flags.
+        // bit 0 = position relative to layer
+        // bit 1 = layer mask disabled
+        // bit 2 = invert layer mask when blending (Obsolete)
+        // bit 3 = indicates that the user mask actually came from rendering other data
+        // bit 4 = indicates that the user and/or vector masks have parameters applied to them
+        file.seek(endPos)
         return {
             top: top,
             right: right,

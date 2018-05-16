@@ -1,12 +1,13 @@
 import File from './file'
 import Util from './util'
 import parseLayer from './layer/layerRecord'
+import parseChannelImage from './layer/channelImage'
 export default class layerMaskInfo {
     file:File
     constructor(file) {
         this.file = file
     }
-    parse() {
+    parse(baseInfo) {
         let layerMaskInfo:any = {}
         let file = this.file
         let startPos = file.tell()
@@ -24,11 +25,18 @@ export default class layerMaskInfo {
         }
 
         layerInfo.layers = [];
-
         for (var i= 0; i<layerInfo.layerCount; i++){
             layerInfo.layers.push((new parseLayer(file)).parse());
         }
+        // todo
+        layerInfo.layers.forEach((layer)=>{
+            parseChannelImage(layer,file, baseInfo.mode)
+        })
 
 
+        layerInfo.layers.reverse();
+
+        file.seek(length+startPos+4)
+        return layerMaskInfo
     }
 }

@@ -1,18 +1,21 @@
 import File from './file'
+import {baseInfo} from "./types";
 
 export default class Header {
     file: File
     sig: string
     version: string
     reserved: string
-    channels: string
+    channels: number
     rows: string
-    height: string // the height of psd
+    height: number // the height of psd
     cols: string
-    width: string // the width of psd
-    depth: string
-    mode: string
+    width: number // the width of psd
+    depth: number
+    mode: number
 
+    startPos:number
+    endPos:number
     MODES = [
         'Bitmap',
         'GrayScale',
@@ -36,7 +39,8 @@ export default class Header {
         this.file = file
     }
 
-    parse() {
+    parse():baseInfo {
+        this.startPos = this.file.tell()
         this.sig = this.file.readString(4)
         if (this.sig != '8BPS') {
             throw new Error(`Invalid file signature detected. Got: ${this.sig}. Expected 8BPS.`)
@@ -55,18 +59,24 @@ export default class Header {
         this.depth = this.file.readUShort()
         // The color mode of the file. Supported values are: Bitmap = 0; Grayscale = 1; Indexed = 2; RGB = 3; CMYK = 4; Multichannel = 7; Duotone = 8; Lab = 9.
         this.mode = this.file.readUShort()
-
         let colorDataLen = this.file.readUInt()
         this.file.seek(colorDataLen, true)
         // let a = this.file.readf('>i', colorDataLen)[0]
+
+        this.endPos = this.file.tell()
+
+        return this.export()
     }
     modeName() {
         return this.MODES[this.mode]
     }
-    export() {
-        let data = {}
-        for (let key in ['sig', 'version', 'channels', 'rows','cols','depth','mode']) {
-            data[key] = this[key]
+    export():baseInfo {
+        let data:baseInfo = {
+            width:this.width,
+            height:this.height,
+            colorMode:this.mode,
+            colorDepth:this.depth,
+            channels:this.channels,
         }
         return data
     }

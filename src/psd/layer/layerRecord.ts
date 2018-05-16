@@ -3,6 +3,7 @@ import Util from '../util'
 import parseMask from './mask'
 import parseBlendingRange from './blendingRange'
 import parseAdditional from './addLayerInfo'
+import {log} from "util";
 
 var MODES = {
     'pass': 'pass through',
@@ -58,8 +59,10 @@ export default class Layer{
             channelInfo.push(o);
         }
 
+        // 'pass' = pass through, 'norm' = normal, 'diss' = dissolve, 'dark' = darken, 'mul ' = multiply, 'idiv' = color burn, 'lbrn' = linear burn, 'dkCl' = darker color, 'lite' = lighten, 'scrn' = screen, 'div ' = color dodge, 'lddg' = linear dodge, 'lgCl' = lighter color, 'over' = overlay, 'sLit' = soft light, 'hLit' = hard light, 'vLit' = vivid light, 'lLit' = linear light, 'pLit' = pin light, 'hMix' = hard mix, 'diff' = difference, 'smud' = exclusion, 'fsub' = subtract, 'fdiv' = divide 'hue ' = hue, 'sat ' = saturation, 'colr' = color, 'lum ' = luminosity,
+        // 混合模式
         var blendModeSig = file.readString(4), // '8BIM'
-            blendModeKey = file.readString(4),
+            blendModeKey = file.readString(4), // 混合模式关键字
             opacity = file.readByte(),
             clipping= file.readByte(),
             flag = file.readByte(),
@@ -69,14 +72,22 @@ export default class Layer{
             extraLen = file.readInt(),
             endPos = file.tell()+extraLen;
         if (blendModeSig !== '8BIM') console.error('wrong in layerRecorder')
+
+
         var layerMaskData = (new parseMask(file)).parse();
         var blendingRangesData = (new parseBlendingRange(file)).parse();
 
-        var nameLength = Util.pad4(file.readByte())-1,
+        var a = file.readByte()
+        var nameLength = Util.pad4(a),
             name = file.readString(nameLength);
-        // var additional = parseAdditional(file, endPos);
+        console.log('====')
+        console.log(name)
+        var additional = (new parseAdditional(file)).parse(endPos);
+        console.log('----')
 
-        file.seek(endPos - file.tell());
+
+        // file.seek(endPos - file.tell());
+        file.seek(endPos);
 
         return {
             top: top,

@@ -22,4 +22,4 @@ exports.default = {
     },
     clamp: (num, min, max) => Math.min(Math.max(num, min), max)
 };
-//# sourceMappingURL=Util.js.map
+//# sourceMappingURL=util.js.map

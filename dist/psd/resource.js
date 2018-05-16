@@ -34,4 +34,4 @@ class Resource {
     }
 }
 exports.default = Resource;
-//# sourceMappingURL=resource.js.map
+//# sourceMappingURL=Resource.js.map

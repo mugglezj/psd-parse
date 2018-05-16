@@ -20,8 +20,22 @@ export default class BlendingRange{
             }
         }
 
+        // channel source range，去除前面8位信息，剩余都是各通道信息
         const num = (length-8)/8
         blendingRange.channels = []
+        for(var i=0; i<num; i++){
+            blendingRange.channels.push({
+                source: {
+                    black: [file.readByte(), file.readByte()],
+                    white: [file.readByte(), file.readByte()]
+                },
+                dist: {
+                    black: [file.readByte(), file.readByte()],
+                    white: [file.readByte(), file.readByte()]
+                }
+            })
+        }
 
+        return blendingRange;
     }
 }

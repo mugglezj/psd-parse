@@ -6,6 +6,8 @@ export default class Resources {
     typeIndex = {}
     length = null
     file: File
+    startPos:number
+    endPos:number
 
     constructor(file) {
         this.file = file
@@ -17,6 +19,7 @@ export default class Resources {
     }
 
     parse() {
+        this.startPos = this.file.tell()
         this.length = this.file.readInt()
         const finish = this.length + this.file.tell()
         let imageResources:any = {}
@@ -45,6 +48,8 @@ export default class Resources {
 
         }
         this.file.seek(finish)
+
+        this.startPos = this.file.tell()
         return imageResources
     }
 

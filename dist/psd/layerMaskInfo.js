@@ -2,11 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("./util");
 const layerRecord_1 = require("./layer/layerRecord");
+const channelImage_1 = require("./layer/channelImage");
 class layerMaskInfo {
     constructor(file) {
         this.file = file;
     }
-    parse() {
+    parse(baseInfo) {
         let layerMaskInfo = {};
         let file = this.file;
         let startPos = file.tell();
@@ -24,6 +25,13 @@ class layerMaskInfo {
         for (var i = 0; i < layerInfo.layerCount; i++) {
             layerInfo.layers.push((new layerRecord_1.default(file)).parse());
         }
+        // todo
+        layerInfo.layers.forEach((layer) => {
+            channelImage_1.default(layer, file, baseInfo.mode);
+        });
+        layerInfo.layers.reverse();
+        file.seek(length + startPos + 4);
+        return layerMaskInfo;
     }
 }
 exports.default = layerMaskInfo;

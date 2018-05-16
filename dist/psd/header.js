@@ -23,6 +23,7 @@ class Header {
         this.file = file;
     }
     parse() {
+        this.startPos = this.file.tell();
         this.sig = this.file.readString(4);
         if (this.sig != '8BPS') {
             throw new Error(`Invalid file signature detected. Got: ${this.sig}. Expected 8BPS.`);
@@ -44,15 +45,20 @@ class Header {
         let colorDataLen = this.file.readUInt();
         this.file.seek(colorDataLen, true);
         // let a = this.file.readf('>i', colorDataLen)[0]
+        this.endPos = this.file.tell();
+        return this.export();
     }
     modeName() {
         return this.MODES[this.mode];
     }
     export() {
-        let data = {};
-        for (let key in ['sig', 'version', 'channels', 'rows', 'cols', 'depth', 'mode']) {
-            data[key] = this[key];
-        }
+        let data = {
+            width: this.width,
+            height: this.height,
+            colorMode: this.mode,
+            colorDepth: this.depth,
+            channels: this.channels,
+        };
         return data;
     }
 }

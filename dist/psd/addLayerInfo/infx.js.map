@@ -1,0 +1,1 @@
+{"version":3,"file":"infx.js","sourceRoot":"","sources":["../../../src/psd/addLayerInfo/infx.ts"],"names":[],"mappings":";;AAAA,mBAAyB,IAAI;IACzB,0BAA0B;IAC1B,MAAM,GAAG,GAAG,MAAM,CAAA;IAClB,MAAM,qBAAqB,GAAG,IAAI,CAAC,QAAQ,EAAE,CAAA;IAC7C,gBAAgB;IAChB,IAAI,CAAC,IAAI,CAAC,CAAC,EAAE,IAAI,CAAC,CAAA;IAClB,OAAO;QACH,GAAG;QACH,qBAAqB;KACxB,CAAA;AACL,CAAC;AAVD,4BAUC"}
